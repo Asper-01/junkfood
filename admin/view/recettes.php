@@ -1,6 +1,6 @@
 <?php
-include "../../header.php";
-include '../../action.php';
+include "../header.php";
+include "../action.php";
 
 
 // Ligne pour afficher les messages de mise a jour du CRUD

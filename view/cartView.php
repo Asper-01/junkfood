@@ -15,10 +15,11 @@ include "header.php";
             <tr>
               <th>ID</th>
               <th>Photo</th>
-              <th>Nom</th>
-              <th>Prix</th>
+              <th>Produit</th>
+              <th>Prix unitaire</th>
               <th>Quantitée</th>
-              <th>Prix total</th>
+              <th>total unitaire</th>
+              <th>Total</th>
               <th>
                 <a href="action.php?clear=all" class="badge-danger badge p-1" onclick="return confirm('Vider votre panier?');"><i class="fas fa-trash"></i>&nbsp;&nbsp;Clear Cart</a>
               </th>
@@ -26,32 +27,40 @@ include "header.php";
          
 
           <?php
-          $stmt = $bdd->prepare('SELECT * FROM cart');
+          $stmt = $bdd->prepare('SELECT * FROM plats');
           $stmt->execute();
           $grand_total = 0;
+          
+
           while ($row = $stmt->fetch()) :
           ?>
             <tr>
               <td><?= $row['id'] ?></td>
               <input type="hidden" class="pid" value="<?= $row['id'] ?>">
               <td><img src="<?= $row['photo'] ?>" width="50"></td>
-              <td><?= $row['nom	'] ?></td>
+              <td><?= $row['nom'] ?></td>
               <td>
                 <h5 class="card-text text-center text-danger"></i>&nbsp;&nbsp;<?= number_format($row['prix'], 2) ?> €</h5>
               </td>
               <input type="hidden" class="pprix" value="<?= $row['prix'] ?>">
               <td>
+                
                 <input type="number" class="form-control itemQty" value="<?= $row['qty'] ?>" style="width:75px;">
               </td>
-              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['total_price'], 2); ?></td>
+              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix']  , 2); ?></td>
+              <td> <?php
+              echo
+              $_SESSION['cart']['total'];
+              ?>
+                </td> 
               <td>
                 <a href="action.php?remove=<?= $row['id'] ?>" class="text-danger lead" onclick="return confirm('Are you sure want to remove this item?');"><i class="fas fa-trash-alt"></i></a>
               </td>
             </tr>
 
           <?php
-            $grand_total += $row['total_price'];
           endwhile; ?>
+
           <tr>
             <td colspan="3">
               <a href="index.php" class="btn btn-success"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Continue

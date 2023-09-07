@@ -26,19 +26,12 @@ require_once 'fonction.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css' />
-
-</head>
-
-
-
 </head>
 
 <body>
-
     <header> <!-- Navbar Bootstrap modifiée Transparente - Collapse set sur "expand-sm"   -->
-
         <nav class="navbar navbar-expand-sm navbar-dark">
-            <a class="navbar-brand" href="./admin/view/recettes.php">Junk Food</a>
+            <a class="navbar-brand" href="index.php">Junk Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -48,7 +41,6 @@ require_once 'fonction.php';
                         <a class="nav-link" href="./contact.php">Nous contacter<span class="sr-only">(current)</span></a>
                     </li>
                     <?php if (userConnected()) { ?>
-
                     <?php } ?>
                     <?php //var_dump($_SESSION);
                     if (AdminConnected())
@@ -63,24 +55,22 @@ require_once 'fonction.php';
                         <li class="nav-item active">
                             <a class="nav-link" href="./crud-users.php">Gestion Users<span class="sr-only">(current)</span></a>
                         </li>
-
                     <?php } ?>
                     <?php if (userConnected()) {
                         //Fonction PhP pour afficher l'icône' "Mon panier" si l'utilisateur est connecté: $_SESSION['connexion'] = true; si le mdp et le log sont corrects dans connection.php 
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="panier.php">Mon panier <i class="fas fa-shopping-cart"></i> <span id="cart-item" span class="badge badge-danger"></span></a>
+                            <a class="nav-link" href="cart.php">Mon panier <i class="fas fa-shopping-cart"></i> <span id="cart-item" span class="badge badge-danger"></span></a>
                         </li>
                     <?php } ?>
                 </ul>
-
                 <ul>
                     <?php if (userConnected()) {
                         //Fonction PhP pour afficher le boutton "Mon Compte" si l'utilisateur est connecté: $_SESSION['connexion'] = true; si le mdp et le log sont corrects dans connection.php 
                     ?>
                         <div class="btnConnect">
                             <div class="btnCo1">
-                                <li class="d-flex"><a href="monCompte.php" class="btn btn-success">Mon compte</a></li>
+                                <li class="d-flex"><a href="./monCompte.php" class="btn btn-success">Mon compte</a></li>
                             </div>
                             <div class="btnCo2">
                                 <li class="d-flex"><a href="deconnexion.php" class="btn btn-danger">deconnexion</a></li>
@@ -89,10 +79,8 @@ require_once 'fonction.php';
                     <?php } else { //Si non connecté on affiche "Connexion"
                     ?>
                         <li class="d-flex"><a href="form_co.php" class="btn btn-success">Connexion</a></li>
-
                     <?php } ?>
                 </ul>
             </div>
         </nav>
-
     </header>
