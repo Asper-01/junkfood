@@ -21,7 +21,7 @@ require_once 'fonction.php';
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -38,14 +38,14 @@ require_once 'fonction.php';
     <header> <!-- Navbar Bootstrap modifiée Transparente - Collapse set sur "expand-sm"   -->
 
         <nav class="navbar navbar-expand-sm navbar-dark">
-            <a class="navbar-brand" href="/index.php">Junk Food</a>
+            <a class="navbar-brand" href="./admin/view/recettes.php">Junk Food</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/contact.php">Nous contacter<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="./contact.php">Nous contacter<span class="sr-only">(current)</span></a>
                     </li>
                     <?php if (userConnected()) { ?>
 
@@ -55,13 +55,13 @@ require_once 'fonction.php';
                     //Fonction d'affichage du lien vers le CRUD (uniquement si l'utilisateur est Admin 1=Admin 0=User)+++++++++++++++++++++++++++++++   
                     { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="create.php">Ajouter un plat<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="./create.php">Ajouter un plat<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/product.php">Gestion plats</a>
+                            <a class="nav-link" href="./admin/product.php">Gestion produits</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="/crud-users.php">Gestion Users<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="./crud-users.php">Gestion Users<span class="sr-only">(current)</span></a>
                         </li>
 
                     <?php } ?>
