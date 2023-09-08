@@ -1,10 +1,8 @@
 <?php
-include 'action.php';
-include "header.php";
-
-// Si déco ou non admin: retour à l'index
+require_once '../action.php';
+require_once 'headerAdmin.php';
 if (!AdminConnected()) {
-    header('location:index.php');
+    header('location:../index.php');
 }
 ?>
 

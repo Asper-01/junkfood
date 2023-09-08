@@ -28,6 +28,18 @@ function AdminConnected()
     return false;
 }
 
+/**
+ * Permettre de savoir si user est connecté en que client (isAdmin a 1) ou membre (0)
+ * @return bool
+ */
+function ClientConnected()
+{
+    if (userConnected() && $_SESSION['isAdmin'] === 0) {
+        return true;
+    }
+    return false;
+}
+
 
 
 

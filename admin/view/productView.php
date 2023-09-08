@@ -1,6 +1,11 @@
 <?php
-include "../header.php";
-include "../action.php";
+require_once './headerAdmin.php';
+require_once '../action.php';  // solution temporaire pour résoudre les variables non définies
+
+
+if (!AdminConnected()) {
+    header('location:../index.php');
+}
 
 
 // Ligne pour afficher les messages de mise a jour du CRUD
@@ -14,31 +19,31 @@ if (isset($_SESSION['response'])) {
 ?>
 
 <body>
-
     <div class="d-flex flex-column">
         <div class="container-fluid">
+        <form action="product.php" method="post" enctype="multipart/form-data">
             <div class="form2">
                 <?php
                 //préparation de la Bdd pour fetch ttes les lignes du Crud.
                 $stmt = $bdd->prepare('SELECT * FROM plats');
                 $stmt->execute();
                 ?>
-                <h3 class="text-center text-info">Plats enregistrées</h3>
+                <h3 class="text-center text-info">Gestion des Produits</h3>
 
                 <div class=btn>
                     <div class="text-center">
-                        <a href="create.php" class="btn btn-info">Ajouter un plat</a>
+                        <a href="./productCreate.php" class="btn btn-info">Ajouter un plat</a>
                     </div>
                     <div class="table">
                         <table class="table table-hover" id="data-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Image</th>
+                                    <th>Id</th>
+                                    <th>Visuel</th>
                                     <th>Nom</th>
                                     <th>Categorie</th>
                                     <th>Prix</th>
-                                    <th>Intéragir</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,9 +55,9 @@ if (isset($_SESSION['response'])) {
                                         <td><?= $row['categorie']; ?></td>
                                         <td><?= $row['prix']; ?></td>
                                         <td>
-                                            <a href="/details.php?details=<?= $row['id']; ?>" class="badge badge-info p-2">Détails</a>
-                                            <a href="/action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
-                                            <a href="/editer.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
+                                            <a href="productRead.php?details=<?= $row['id']; ?>" class="badge badge-info p-2">Détails</a>
+                                            <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
+                                            <a href="action.php?update=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -61,6 +66,7 @@ if (isset($_SESSION['response'])) {
                     </div>
                 </div>
             </div>
+        </form>
         </div>
     </div>
     <?php

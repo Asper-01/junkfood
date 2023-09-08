@@ -1,6 +1,6 @@
 <?php
-include 'action.user.php';
-include 'header.php';
+require_once 'action.user.php';
+require_once 'header.php';
 require_once 'config.php';
 ?>
 

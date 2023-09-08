@@ -1,5 +1,5 @@
 <?php
-include 'config.php';    // On inclut la Connexion à la Bdd
+require_once 'config.php';    // On inclut la Connexion à la Bdd
 
 
 $update = false;
@@ -41,10 +41,7 @@ if (isset($_POST['add'])) {
 	$_SESSION['response'] = "Insertion réussie en base de donnée !";
 	$_SESSION['res_type'] = "success";
 
-
-	// ******************  CRUD EFFACER ********************
 }
-
 
 
 // ******************  CRUD EDITION MAJ ********************
@@ -126,9 +123,6 @@ if (isset($_POST['update'])) {
 	var_dump('Debug END');
 	exit;
 }
-
-
-
 
 // Si tous les champs sont présents
 /*if (isset($_POST['update'])) {
