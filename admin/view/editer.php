@@ -6,7 +6,9 @@ if (!AdminConnected()) {
     header('location:index.php');
 }
 ?>
+
 <body>
+
     <body class="d-flex flex-column">
         <div class="container-fluid">
             <div class="edition">
@@ -18,7 +20,7 @@ if (!AdminConnected()) {
                         </div>
                         <div class="form-group mb-3">
                             <div class="images text-center">
-                                <img src="<?= $row['photo']; ?>" width="200" class="rounded">
+                                <img src="/<?= $row['photo']; ?>" width="300" class="rounded">
                             </div>
                             <br>
                             <input type="username" name="nom" value="<?= $nom; ?>" class="form-control" placeholder="Enter nom" required>
@@ -27,6 +29,7 @@ if (!AdminConnected()) {
                         </div>
                         <div class="form-group">
                             <input type="hidden" name="oldimage" value="<?= $photo; ?>">
+                            <input type="hidden" name="image" class="custom-file">
                             <input type="file" name="image" class="custom-file">
                         </div>
                         <div class="form-group text-center">
@@ -43,13 +46,13 @@ if (!AdminConnected()) {
                                 <input type="submit" name="update" class="btn btn-success btn-block" value="Mettre à jour">
                             <?php } ?>
 
-                            <a href="recettes.php" class="btn btn-danger btn-block">Retour</a>
+                            <a href="/admin/product.php" class="btn btn-danger btn-block">Retour</a>
                         </div>
                 </form>
             </div>
     </body>
 
 
-    
+
     <?php
     include "../footer.php";

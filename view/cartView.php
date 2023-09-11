@@ -27,13 +27,9 @@ require_once "header.php";
          
 
           <?php
-          $stmt = $bdd->prepare('SELECT * FROM plats');
-          $stmt->execute();
-          $grand_total = 0;
-          
-
-          while ($row = $stmt->fetch()) :
+          foreach ($query as $row):
           ?>
+          
             <tr>
               <td><?= $row['id'] ?></td>
               <input type="hidden" class="pid" value="<?= $row['id'] ?>">
@@ -59,7 +55,7 @@ require_once "header.php";
             </tr>
 
           <?php
-          endwhile; ?>
+          endforeach; ?>
 
           <tr>
             <td colspan="3">

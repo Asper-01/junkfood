@@ -57,7 +57,7 @@ if (isset($_SESSION['response'])) {
                                         <td>
                                             <a href="productRead.php?details=<?= $row['id']; ?>" class="badge badge-info p-2">Détails</a>
                                             <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
-                                            <a href="action.php?update=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
+                                            <a href="action.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
                                         </td>
                                     </tr>
                                 <?php } ?>

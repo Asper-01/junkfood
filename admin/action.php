@@ -21,37 +21,6 @@ if (isset($_POST['add'])) {
 	$upload = "uploads/" . $photo;
 	$categorie = $_POST['categorie'];
 	
-	
-
-	// ******************  CRUD AJOUTER ********************
-
-	// On prépare la requête SQL
-	$stmt = $bdd->prepare("INSERT INTO plats (nom,preparation,prix,photo,categorie)VALUES(:nom,:preparation,:prix,:photo,:categorie)");
-	// On execute la requête SQL
-	$stmt->execute(['nom' => $nom, "preparation" => $preparation, "prix" => $prix, "photo" => $upload, "categorie" => $categorie]);
-	// La partie upload du fichier image via un dossier temporaire
-	move_uploaded_file($_FILES['image']['tmp_name'], $upload);
-	// On renvoie l'utilisateur à la page CRUD + message de confirmation
-	header('location:recettes.php');
-	$_SESSION['response'] = "Insertion réussie en base de donnée !";
-	$_SESSION['res_type'] = "success";
-
-	// ******************  CRUD EFFACER ********************
-} else if (isset($_GET['delete'])) {
-	$id = $_GET['delete'];
-	// On séléctionne ce qui va être effacé
-	$stmt = $bdd->prepare("SELECT photo FROM plats WHERE id=:id");
-	// On efface l'entrée séléctionnée
-	$stmt->execute(["id" => $id]);
-	$row = $stmt->fetch();
-	$imagepath = $row['photo'];
-	unlink($imagepath);
-	$stmt = $bdd->prepare("DELETE FROM plats WHERE id=:id");
-	$stmt->execute(["id" => $id]);
-	// On renvoie l'utilisateur à la page CRUD + message de confirmation
-	header('location:recettes.php');
-	$_SESSION['response'] = "Champ effacé de la base de donnée !";
-	$_SESSION['res_type'] = "danger";
 }
 
 // ******************  CRUD EDITION MAJ ********************
@@ -92,7 +61,7 @@ if (isset($_POST['update'])) {
 	$stmt->execute(["nom" => $nom, "categorie" => $categorie, "preparation" => $preparation, "photo" => $newimage, "id" => $id, "prix" =>$prix,]);
 	$_SESSION['response'] = "Mise a jour effectuée !";
 	$_SESSION['res_type'] = "primary";
-	header('location:recettes.php');
+	header('location:/admin/product.php');
 }
 
 

@@ -165,7 +165,7 @@ input.form {
 
 .custom-file {
    border-radius: 5px;
-   background-color: indigo;
+   background-color: rgb(50, 123, 13);
    color: white;
    padding: 0.5rem;
    font-family: sans-serif;
