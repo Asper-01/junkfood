@@ -50,14 +50,14 @@ if (isset($_SESSION['response'])) {
                                 <?php while ($row = $stmt->fetch()) { ?>
                                     <tr>
                                         <td><?= $row['id']; ?></td>
-                                        <td><img src="/<?= $row['photo']; ?>" width="30" class="rounded"></td>
+                                        <td><img src="/<?= $row['photo']; ?>" width="50" class="rounded"></td>
                                         <td><?= $row['nom']; ?></td>
                                         <td><?= $row['categorie']; ?></td>
                                         <td><?= $row['prix']; ?></td>
                                         <td>
                                             <a href="productRead.php?details=<?= $row['id']; ?>" class="badge badge-info p-2">Détails</a>
                                             <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
-                                            <a href="action.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
+                                            <a href="productUpdate.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
                                         </td>
                                     </tr>
                                 <?php } ?>

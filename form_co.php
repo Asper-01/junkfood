@@ -17,7 +17,7 @@ require_once "header.php";
                   case 'password':
             ?>
                      <div class="alert alert-danger">
-                        <strong>Erreur</strong> mot de passe incorrect
+                        <strong>ErFreur</strong> mot de passe incorrect
                      </div>
                   <?php
                      break;
@@ -41,7 +41,7 @@ require_once "header.php";
             ?>
 
             <form action="connexion.php" method="post">
-               <h2 class="text-center">Connexion</h2>
+               <h3 class="text-center text-info">Me connecter</h3>
                <div class="form-group">
                   <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
                </div>
@@ -50,7 +50,7 @@ require_once "header.php";
                </div>
                <div class="form-group">
                   <button type="submit" class="btn btn-primary btn-block ">Connexion</button>
-                  <p class="text-center"><a href="inscription.php">Inscription</a></p>
+                  <a href="inscription.php" class="btn btn-info btn-block addItemBtn">Inscription</a>
                </div>
             </form>
          </div>

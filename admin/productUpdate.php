@@ -1,69 +1,54 @@
 <?php
-require_once '../config.php';  // On inclut la Connexion à la Bdd
-require_once '../fonction.php';
-
-if (!AdminConnected()) {
-	header('location:../index.php');
-}
+include '../config.php';  // On inclut la Connexion à la Bdd
+include '../fonction.php';  //Include des fonctions pour vérification isAdmin
 
 $update = false;
 $id = "";
 $nom = "";
 $preparation = "";
 $prix = "";
-$newimage = "";
+$photo = "";
 $categorie = "";
 
+// *******************************  CRUD  ********************************
+// Si les champs sont remplis:
 
-
-// ******************  CRUD DETAILS AFFICHAGE ********************
-
-if (isset($_GET['details'])) {
-	$id = $_GET['details'];
-	$stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
-	$stmt->execute(["id" => $id]);
-	$row = $stmt->fetch();
-
-	$id = $_POST['id'];
+if (isset($_POST['add'])) {
 	$nom = $_POST['nom'];
 	$preparation = $_POST['preparation'];
-	$prix = $_POST['prix'];
-	$oldimage = $_POST['oldimage'];
+	$prix =  $_POST['prix'];
+	$photo = $_FILES['image']['name'];
+	$upload = "uploads/" . $photo;
 	$categorie = $_POST['categorie'];
+	
 }
 
-if (isset($_GET['edit'])) {
-	// Affichage du formulaire d'édition
+// ******************  CRUD EDITION MAJ ********************
+
+
+if (isset($_GET['edit'])) {    // Editer une entrée de la Bdd
 	$id = $_GET['edit'];
 
 	$stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
 	$stmt->execute(["id" => $id]);
 	$row = $stmt->fetch();
 
-	$id = $_POST['id'];
-	$nom = $_POST['nom'];
-	$preparation = $_POST['preparation'];
-	$prix = $_POST['prix'];
-	$oldimage = $_POST['oldimage'];
-	$categorie = $_POST['categorie'];
+	$id = $row['id'];
+	$nom = $row['nom'];
+	$preparation = $row['preparation'];
+	$prix = $row['prix'];
+	$photo = $row['photo'];
+	$categorie = $row['categorie'];
 	$update = true;
 }
-
 if (isset($_POST['update'])) {
-	// Vérifier si un post update est réalisé
-	$stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
-	$stmt->execute(["id" => $id]);
-	$row = $stmt->fetch();
-
-	$updateOk = false;
-	//controller si les données sont définies correctement ( à implémenter)
 	$id = $_POST['id'];
 	$nom = $_POST['nom'];
 	$preparation = $_POST['preparation'];
 	$prix = $_POST['prix'];
 	$oldimage = $_POST['oldimage'];
 	$categorie = $_POST['categorie'];
-
+	
 	if (isset($_FILES['image']['name']) && ($_FILES['image']['name'] != "")) {
 		$newimage = "uploads/" . $_FILES['image']['name'];  //timestamper et garder l'ext du fichier (recup nom fichier + traitement recup extension changer le nom avec un tsmp)
 		unlink($oldimage);
@@ -72,44 +57,33 @@ if (isset($_POST['update'])) {
 		$newimage = $oldimage;
 	}
 
-
 	$stmt = $bdd->prepare("UPDATE plats SET nom=:nom, preparation=:preparation, prix=:prix, categorie=:categorie,photo=:photo WHERE id=:id");
-	try {
-		$params = [
-			"id" => $id,
-			"nom" => $nom,
-			"preparation" => $preparation,
-			"prix" => $prix,
-			"categorie" => $categorie,
-			"photo" => $newimage,
-
-		];
-		$row = $stmt->execute($params);
-		if ($row === false) {
-			throw new Exception("'Erreur d'insertion des données");
-		} else {
-			$updateOk = true;
-		}
-	} catch (Exception $e) {
-		var_dump('Exception', $e);
-		exit;
-	}
-
-	// Données à jour
-	if ($updateOk) {
-		// Définition des variables de session
-		$_SESSION['response'] = "Mise a jour effectuée !";
-		$_SESSION['res_type'] = "primary";
-		unset($params['id']);
-		foreach ($params as $key => $row) {
-			$_SESSION[$key] = $row;
-		}
-
-		// Redirection vers la page CRUD + message de confirmation
-		header('location:monCompte.php');
-		exit();
-	}
+	$stmt->execute(["nom" => $nom, "categorie" => $categorie, "preparation" => $preparation, "photo" => $newimage, "id" => $id, "prix" =>$prix,]);
+	$_SESSION['response'] = "Mise a jour effectuée !";
+	$_SESSION['res_type'] = "primary";
+	header('location:/admin/product.php');
 }
+
+
+
+
+// ******************  CRUD DETAILS AFFICHAGE ********************
+if (isset($_GET['details'])) {
+	$id = $_GET['details'];
+	$stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
+	$stmt->execute(["id" => $id]);
+	$row = $stmt->fetch();
+
+	$vid = $row['id'];
+	$vnom = $row['nom'];
+	$vpreparation = $row['preparation'];
+	$vprix = $row['prix'];
+	$vphoto = $row['photo'];
+	$vcategorie = $row['categorie'];
+	
+}
+
+
 
 
 include 'view/updateView.php'; // On inclut le fichier updateView pour l'affichage

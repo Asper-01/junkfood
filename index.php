@@ -29,11 +29,19 @@ require_once "header.php";
                                         <b>Quantitée : </b>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="number" name = "qty" class="form-control pqty" value="<?= $row['product_qty'] ?>">
+                                        <input type="number" name="qty" class="form-control pqty" value="<?= $row['product_qty'] ?>">
                                     </div>
                                 </div>
-                                <input type="hidden" name = "pid" class="pid" value="<?= $row['id'] ?>">
-                                <button class="btn btn-info btn-block addItemBtn"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Ajouter au panier</button>
+                                <?php if (userConnected()) {
+                                ?>
+                                    <input type="hidden" name="pid" class="pid" value="<?= $row['id'] ?>">
+                                    <button class="btn btn-info btn-block addItemBtn"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Ajouter au panier</button>
+
+                                <?php } else if (!userConnected())  {  
+                                 ?>
+                                    <a href="form_co.php" class="btn btn-info btn-block addItemBtn">Ajouter au panier</a>
+
+                                <?php } ?>
                             </form>
                         </div>
                     </div>

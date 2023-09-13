@@ -3,6 +3,13 @@ require_once 'config.php';  // On inclut la Connexion à la Bdd
 require_once 'fonction.php';  //Include des fonctions pour vérification isAdmin
 
 
+$update = false;
+$id = "";
+$qty = "";
+$id_product = "";
+$user_id = "";
+
+
 // Initiatilaisation du panier dans la session
 if (isset($_SESSION['cart']) === false) {
 	$_SESSION['cart'] = [
@@ -12,7 +19,6 @@ if (isset($_SESSION['cart']) === false) {
 }
 
 // Fonction de calcul du prix total panier
-
 function calculTotalPriceCart()
 {
 	$total = 0;
@@ -23,26 +29,34 @@ function calculTotalPriceCart()
 	return $total;
 }
 
-function setProductInCart(array $query, int $qty)
-{
-	$productId = $query['id'];
+// function setProductInCart(array $query, int $qty)
+// {
+// 	$productId = $query['id'];
 
-	$_SESSION['cart']['products'][$productId] = [
-		'idProduct' => $query['id'],
-		'price' => $query['prix'],
-		'quantity' => $qty,
-	];
+// 	$_SESSION['cart']['products'][$productId] = [
+// 		'idProduct' => $query['id'],
+// 		'price' => $query['prix'],
+// 		'quantity' => $qty,
+// 	];
 
-	calculTotalPriceCart();
-}
+// 	echo '<pre>';
+// 	var_dump($_SESSION);
+
+// 	calculTotalPriceCart();
+// }
 
 
 // ***********************  Ajouter au panier  **************************
 
 if (isset($_POST['pid'])) {
 	$pid = (int)$_POST['pid'];   //on recupere la valeur postée (id produit)
+	
 	$quantity = (int)$_POST['qty'];
-	$userId = $_POST['id'];
+
+	if(!$quantity){
+		$quantity = 1;
+	}
+	//$userId = $_POST['id'];
 
 	$stmt = $bdd->prepare('SELECT id, prix FROM plats WHERE id=:id'); //on prépare une requete
 	$stmt->execute(["id" => $pid]); //on attribue a query le resultat requete
@@ -55,17 +69,47 @@ if (isset($_POST['pid'])) {
 	} else {
 		// Produit trouvé en BDD
 		// On ajoute le produit dans le panier
-		setProductInCart($query, $quantity);
+		//setProductInCart($query, $quantity);
 		// On prépare la requête SQL
-		$stmt = $bdd->prepare("INSERT INTO cart (qty,id_product,user_id)VALUES(:qty,:id_product,:user_id)");
-		// On execute la requête SQL
-		$stmt->execute(['qty' => $quantity, 'id_product' => $query['id'], 'user_id' => (int)$_SESSION['id']]);
+		// On selectionne nos champs de 'cart'
 
 
+		//on check si un panier existe déjà pour cet user et ce produit
+		$stmt = $bdd->prepare('SELECT * FROM cart WHERE user_id=:user_id and id_product=:id_product'); //on prépare une requete
+		$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"]]); //on attribue a query le resultat requete
+		$cart_line = $stmt->fetch();
 
-		//var_dump($_SESSION['id']);
-	}
+
+		// une ligne produit avec ce user existe et la quantité est superieur à 0
+		if($cart_line && $cart_line['qty'] > 0)
+		{
+			//update la quantité sur cette ligne
+			$new_quantity = $cart_line['qty'] + $quantity;
+			$stmt = $bdd->prepare('UPDATE cart set qty=:new_quantity WHERE user_id=:user_id and id_product=:id_product');
+			$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"], 'new_quantity' => $new_quantity]); 
+		} else {
+			// ce produit n'est pas déjà dans le panier de cet user
+			$stmt = $bdd->prepare('INSERT INTO cart (qty,id_product,user_id) VALUES(:quantity,:id_product,:user_id)');
+			$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"], 'quantity' => $quantity]); 
+		}
+
+	} header('location:/cart.php');
 	return true;
+	
+
+	// ******************  CRUD EFFACER ********************
+} else if (isset($_GET['delete'])) {
+	$id = $_GET['delete'];
+	// On efface l'entrée séléctionnée
+	$stmt->execute(["id" => $pid]);
+	$row = $stmt->fetch();
+
+	$stmt = $bdd->prepare("DELETE * FROM cart WHERE id=:id");
+	$stmt->execute(["id" => $id]);
+	// On renvoie l'utilisateur à la page CRUD + message de confirmation
+	header('location:cart.php');
+	$_SESSION['response'] = "Champ effacé de la base de donnée !";
+	$_SESSION['res_type'] = "danger";
 }
 
 
@@ -76,17 +120,13 @@ $sid = (int)$_SESSION['id'];
 $stmt = $bdd->prepare('SELECT cart.*, plats.nom,plats.prix, plats.photo FROM cart
 JOIN `plats` ON `plats`.`id`=`cart`.`id_product`
 WHERE user_id=:id;');
+
+
 $stmt->execute(["id" => $sid]);
 $query = $stmt->fetchAll();
 
-
-var_dump('<pre>', $query, '</pre>');
-
-
+var_dump($_SESSION['id']);
 $grand_total = 0;
-
-
-
 
 
 

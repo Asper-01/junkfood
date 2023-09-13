@@ -18,39 +18,42 @@ require_once "header.php";
               <th>Produit</th>
               <th>Prix unitaire</th>
               <th>Quantitée</th>
-              <th>total unitaire</th>
-              <th>Total</th>
+              <th>sous-total</th>
               <th>
-                <a href="action.php?clear=all" class="badge-danger badge p-1" onclick="return confirm('Vider votre panier?');"><i class="fas fa-trash"></i>&nbsp;&nbsp;Clear Cart</a>
+                <a href="action.php?clear=all" class="badge-danger badge p-1" onclick="return confirm('Vider votre panier?');"><i class="fas fa-trash"></i>&nbsp;&nbsp;Vider le panier</a>
               </th>
             </tr>
          
 
           <?php
+          //On boucle pour afficher la $query
           foreach ($query as $row):
           ?>
           
             <tr>
               <td><?= $row['id'] ?></td>
               <input type="hidden" class="pid" value="<?= $row['id'] ?>">
-              <td><img src="<?= $row['photo'] ?>" width="50"></td>
+              <td><img src="<?= $row['photo'] ?>" width="50" class="rounded"></td>
               <td><?= $row['nom'] ?></td>
               <td>
-                <h5 class="card-text text-center text-danger"></i>&nbsp;&nbsp;<?= number_format($row['prix'], 2) ?> €</h5>
+                <h6 class="card-text text-center text-danger"></i>&nbsp;&nbsp;<?= number_format($row['prix'], 2) ?> €</h6>
               </td>
               <input type="hidden" class="pprix" value="<?= $row['prix'] ?>">
               <td>
                 
-                <input type="number" class="form-control itemQty" value="<?= $row['qty'] ?>" style="width:75px;">
+                <input type="number" class="form-control itemQty" value="<?= $row['qty'] ?>" style="width:60px;">
+                
               </td>
-              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix']  , 2); ?></td>
+              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix'] * $row['qty'], 2); ?> €</td>
               <td> <?php
-              echo
-              $_SESSION['cart']['total'];
+
               ?>
                 </td> 
               <td>
-                <a href="action.php?remove=<?= $row['id'] ?>" class="text-danger lead" onclick="return confirm('Are you sure want to remove this item?');"><i class="fas fa-trash-alt"></i></a>
+              <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
+              <?php 
+              var_dump ($row['id']);
+              ?>
               </td>
             </tr>
 
@@ -59,15 +62,15 @@ require_once "header.php";
 
           <tr>
             <td colspan="3">
-              <a href="index.php" class="btn btn-success"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Continue
-                Shopping</a>
+              <a href="index.php" class="btn btn-success"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Continuer
+                mes achats</a>
             </td>
-            <td colspan="2"><b>Grand Total</b></td>
-            <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($grand_total, 2); ?>€</td>
-
+            <td colspan="2"><b>Total panier</b></td>
+            <td><i class="fas"></i>&nbsp;&nbsp;<?=  $_SESSION['cart']['total']; ?>€</td>
             <td>
               <a href="checkout.php" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
             </td>
+            
 
         </table>
       </div>
@@ -78,49 +81,7 @@ require_once "header.php";
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js'></script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
 
-    // Change the item quantity
-    $(".itemQty").on('change', function() {
-      var $el = $(this).closest('tr');
-
-      var pid = $el.find(".pid").val();
-      var pprix = $el.find(".pprix").val();
-      var qty = $el.find(".itemQty").val();
-      location.reload(true);
-      $.ajax({
-        url: 'action.php',
-        method: 'post',
-        cache: false,
-        data: {
-          qty: qty,
-          pid: pid,
-          pprix: pprix
-        },
-        success: function(response) {
-          console.log(response);
-        }
-      });
-    });
-
-    // Load total no.of items added in the cart and display in the navbar
-    load_cart_item_number();
-
-    function load_cart_item_number() {
-      $.ajax({
-        url: 'action.php',
-        method: 'get',
-        data: {
-          cartItem: "cart_item"
-        },
-        success: function(response) {
-          $("#cart-item").html(response);
-        }
-      });
-    }
-  });
-</script>
 
 
 

@@ -1,14 +1,12 @@
 <?php
 require_once 'config.php';
 require_once 'header.php';
-
 ?>
 
 <body>
-
     <body class="d-flex flex-column">
         <div class="container-fluid">
-            <div class="login-form">
+            <div class="inscription-form">
                 <?php //Les messages d'erreur sont générés en HTML et les classes d'alerte du framework Bootstrap CSS sont utilisées pour les mettre en forme
                 if (isset($_GET['reg_err'])) { //Verification des données envoyées en GET:
                     $err = htmlspecialchars($_GET['reg_err']);
@@ -23,7 +21,6 @@ require_once 'header.php';
                                 <a href="form_co.php">
                                     <button class="btn btn-primary btn-lg">Je me connecte</button>
                                 </a>
-
                             </div>
                         <?php
                             break;
@@ -39,7 +36,7 @@ require_once 'header.php';
                         case 'email': // Si erreurs de mail:
                         ?>
                             <div class="alert alert-danger">
-                                <strong>Erreur</strong> email non valide
+                                <strong>email non valide</strong>
                             </div>
                         <?php
                             break;
@@ -83,22 +80,49 @@ require_once 'header.php';
                 }
                 ?>
                 <form action="inscription_traitement.php" method="post">
-                    <h2 class="text-center">Inscription</h2>
-                    <div class="form-group">
-                        <input type="text" name="pseudo" class="form-control" placeholder="Pseudo" required="required" autocomplete="off">
+                    <h3 class="text-center text-info">Inscription</h3><br>
+
+
+                    <input type="username" name="pseudo" class="form-control" placeholder="Pseudo" required="required" autocomplete="off"><br>
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="family-name" name="nom" class="form-control" placeholder="nom" required="required" autocomplete="off"><br>
+                        </div>
+                        <div class="col">
+                            <input type="given-name" name="prenom" class="form-control" placeholder="prenom" required="required" autocomplete="off"><br>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
+                    <div class="row">
+                        <div class="col">
+                            <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off"><br>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="adresse" class="form-control" placeholder="adresse" required="required" autocomplete="off"><br>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="postal-code" name="code_postal" class="form-control" placeholder="code postal" required="required" autocomplete="off"><br>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="ville" class="form-control" placeholder="ville" required="required" autocomplete="off"><br>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="password_retype" class="form-control" placeholder="Re-tapez le mot de passe" required="required" autocomplete="off">
+
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
+                            </div>
+                            <div class="col">
+                            <input type="password" name="password_retype" class="form-control" placeholder="Re-tapez mot de passe" required="required" autocomplete="off"><br>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Inscription</button>
-                    </div>
+
+                    <button type="submit" class="btn btn-info btn-block">Inscription</button>
+
                     <a href="index.php" class="btn btn-danger btn-block">Retour à l'acceuil</a>
 
                 </form>
