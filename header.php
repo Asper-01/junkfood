@@ -52,8 +52,7 @@ require_once 'fonction.php';
                             <a class="nav-link" href="./admin/product.php">Administration</a>
                         </li>
                     <?php } ?>
-                    <?php if (userConnected()) {
-                        //Fonction PhP pour afficher l'icône' "Mon panier" si l'utilisateur est connecté: $_SESSION['connexion'] = true; si le mdp et le log sont corrects dans connection.php 
+                    <?php if (userConnected()) {     
                     ?>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php">Mon panier <i class="fas fa-shopping-cart"></i> <span id="cart-item" span class="badge badge-danger"></span></a>
@@ -80,3 +79,5 @@ require_once 'fonction.php';
             </div>
         </nav>
     </header>
+
+    

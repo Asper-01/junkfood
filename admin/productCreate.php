@@ -1,50 +1,118 @@
 <?php
-require_once '../action.php';
-require_once 'headerAdmin.php';
-?>
+include '../config.php';  // On inclut la Connexion à la Bdd
+include '../fonction.php';  //Include des fonctions pour vérification isAdmin
 
-<body>
-    <body class="d-flex flex-column">
-        <div class="container-fluid">
-            <div class="create-form">
-                <form action=" action.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $id; ?>">
-                    <div class="form-group">
-                        <div class="form-group">
-                            <h3 class="text-center text-info">Création fiche produit</h3>
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="username" name="nom" value="<?= $nom; ?>" class="form-control" placeholder="Enter nom" required>
-                            <input type="text" name="preparation" value="<?= $preparation; ?>" class="form-control" placeholder="Décrire la recette" required>
-                            <input type="text" name="prix" value="<?= $prix; ?>" class="form-control" placeholder="Prix de vente TTC" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="hidden" name="oldimage" value="<?= $photo; ?>">
-                            <input type="file" name="image" class="custom-file">
-                        </div>
-                        <div class="form-group text-center">
-                            <input type="radio" name="categorie" value="1" <?php if ($categorie == "1") { ?>checked<?php } ?>>
-                            <label for="entrée">Entrée</label>
-                            <input type="radio" name="categorie" value="2" <?php if ($categorie == "2") { ?>checked<?php } ?>>
-                            <label for="plat">Plat</label>
-                            <input type="radio" name="categorie" value="3" <?php if ($categorie == "3") { ?>checked<?php } ?>>
-                            <label for="dessert">Dessert</label>
-                        </div>
-                        <div class="form-group">
-                        <?php if ($update == true) { ?>
-                            <input type="submit" name="update" class="btn btn-success btn-block" value="Mettre à jour">
-                        <?php } else { ?>
-                            <input type="submit" name="add" class="btn btn-info btn-block" value="Ajouter la recette">
-                        <?php } ?>
-                    </div>
-                </form>
-            </div>
-        </div>
+$update = false;
+$id = "";
+$nom = "";
+$preparation = "";
+$prix = "";
+$photo = "";
+$categorie = "";
 
-        <?php
-        $stmt = $bdd->prepare('SELECT * FROM plats'); //préparation de la Bdd pour fetch ttes les lignes du Crud.
-        $stmt->execute();
-        ?>
+// *******************************  CRUD  ********************************
+// Si les champs sont remplis:
 
-        <?php
-        include "../footer.php";
+if (isset($_POST['add'])) {
+    $nom = $_POST['nom'];
+    $preparation = $_POST['preparation'];
+    $prix =  $_POST['prix'];
+    $photo = $_FILES['image']['name'];
+    $upload = "uploads/" . $photo;
+    $categorie = $_POST['categorie'];
+
+
+
+    // ******************  CRUD AJOUTER ********************
+
+    // On prépare la requête SQL
+    $stmt = $bdd->prepare("INSERT INTO plats (nom,preparation,prix,photo,categorie)VALUES(:nom,:preparation,:prix,:photo,:categorie)");
+    // On execute la requête SQL
+    $stmt->execute(['nom' => $nom, "preparation" => $preparation, "prix" => $prix, "photo" => $upload, "categorie" => $categorie]);
+    // La partie upload du fichier image via un dossier temporaire
+    move_uploaded_file($_FILES['image']['tmp_name'], $upload);
+    // On renvoie l'utilisateur à la page CRUD + message de confirmation
+    header('location:/admin/product.php');
+    $_SESSION['response'] = "Insertion réussie en base de donnée !";
+    $_SESSION['res_type'] = "success";
+
+    // ******************  CRUD EFFACER ********************
+} else if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    // On séléctionne ce qui va être effacé
+    $stmt = $bdd->prepare("SELECT photo FROM plats WHERE id=:id");
+    // On efface l'entrée séléctionnée
+    $stmt->execute(["id" => $id]);
+    $row = $stmt->fetch();
+    $imagepath = $row['photo'];
+    unlink($imagepath);
+    $stmt = $bdd->prepare("DELETE FROM plats WHERE id=:id");
+    $stmt->execute(["id" => $id]);
+    // On renvoie l'utilisateur à la page CRUD + message de confirmation
+    header('location:recettes.php');
+    $_SESSION['response'] = "Champ effacé de la base de donnée !";
+    $_SESSION['res_type'] = "danger";
+}
+
+// ******************  CRUD EDITION MAJ ********************
+
+
+if (isset($_GET['edit'])) {    // Editer une entrée de la Bdd
+    $id = $_GET['edit'];
+
+    $stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
+    $stmt->execute(["id" => $id]);
+    $row = $stmt->fetch();
+
+    $id = $row['id'];
+    $nom = $row['nom'];
+    $preparation = $row['preparation'];
+    $prix = $row['prix'];
+    $photo = $row['photo'];
+    $categorie = $row['categorie'];
+    $update = true;
+}
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $nom = $_POST['nom'];
+    $preparation = $_POST['preparation'];
+    $prix = $_POST['prix'];
+    $oldimage = $_POST['oldimage'];
+    $categorie = $_POST['categorie'];
+
+    if (isset($_FILES['image']['name']) && ($_FILES['image']['name'] != "")) {
+        $newimage = "uploads/" . $_FILES['image']['name'];  //timestamper et garder l'ext du fichier (recup nom fichier + traitement recup extension changer le nom avec un tsmp)
+        unlink($oldimage);
+        move_uploaded_file($_FILES['image']['tmp_name'], $newimage);
+    } else {
+        $newimage = $oldimage;
+    }
+
+    $stmt = $bdd->prepare("UPDATE plats SET nom=:nom, preparation=:preparation, prix=:prix, categorie=:categorie,photo=:photo WHERE id=:id");
+    $stmt->execute(["nom" => $nom, "categorie" => $categorie, "preparation" => $preparation, "photo" => $newimage, "id" => $id, "prix" => $prix,]);
+    $_SESSION['response'] = "Mise a jour effectuée !";
+    $_SESSION['res_type'] = "primary";
+    header('location:recettes.php');
+}
+
+
+
+
+// ******************  CRUD DETAILS AFFICHAGE ********************
+if (isset($_GET['details'])) {
+    $id = $_GET['details'];
+    $stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
+    $stmt->execute(["id" => $id]);
+    $row = $stmt->fetch();
+
+    $vid = $row['id'];
+    $vnom = $row['nom'];
+    $vpreparation = $row['preparation'];
+    $vprix = $row['prix'];
+    $vphoto = $row['photo'];
+    $vcategorie = $row['categorie'];
+}
+
+
+
+include 'view/createView.php'; // On inclut le fichier createView pour l'affichage

@@ -116,4 +116,4 @@ if (isset($_GET['details'])) {
 
 
 
-include 'view/productView.php'; // On inclut le fichier updateView pour l'affichage
+include 'view/productView.php'; // On inclut le fichier productView pour l'affichage
