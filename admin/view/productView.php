@@ -1,11 +1,11 @@
 <?php
 require_once './headerAdmin.php';
 require_once '../action.php';  // solution temporaire pour résoudre les variables non définies
-
-
-if (!AdminConnected()) {
+require_once '../fonction.php'
+?>
+<?php if (!AdminConnected()) {
     header('location:../index.php');
-}
+} 
 
 
 // Ligne pour afficher les messages de mise a jour du CRUD
@@ -16,6 +16,7 @@ if (isset($_SESSION['response'])) {
     unset($_SESSION['response']);
     unset($_SESSION['res_type']);
 }
+
 ?>
 
 <body>
@@ -56,7 +57,7 @@ if (isset($_SESSION['response'])) {
                                         <td><?= $row['prix']; ?></td>
                                         <td>
                                             <a href="productRead.php?details=<?= $row['id']; ?>" class="badge badge-info p-2">Détails</a>
-                                            <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
+                                            <a href="../admin/product.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Voulez vous effacer cette entrée?');">Effacer</a>
                                             <a href="productUpdate.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Editer</a>
                                         </td>
                                     </tr>

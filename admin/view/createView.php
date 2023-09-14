@@ -49,11 +49,9 @@ if (isset($_SESSION['response'])) {
                             <label for="dessert">Dessert</label>
                         </div>
                         <div class="form-group">
-                            <?php if ($update == true) { ?>
-                                <input type="submit" name="update" class="btn btn-success btn-block" value="Mettre à jour">
-                            <?php } else { ?>
+
                                 <input type="submit" name="add" class="btn btn-info btn-block" value="Ajouter la recette">
-                            <?php } ?>
+                                <a href="product.php" class="btn btn-danger btn-block">Retour aux produits</a>
                         </div>
                 </form>
             </div>
