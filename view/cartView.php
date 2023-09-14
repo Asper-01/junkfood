@@ -1,5 +1,5 @@
 <?php
-include "header.php";
+require_once "header.php";
 ?>
 
 <div class="container-fluid">
@@ -27,9 +27,9 @@ include "header.php";
          
 
           <?php
-          $stmt = $bdd->prepare('SELECT * FROM plats');
-          $stmt->execute();
-          $grand_total = 0;
+          //On boucle pour afficher la $query
+          foreach ($query as $row):
+          ?>
           
 
           while ($row = $stmt->fetch()) :
@@ -47,7 +47,7 @@ include "header.php";
                 
                 <input type="number" class="form-control itemQty" value="<?= $row['qty'] ?>" style="width:75px;">
               </td>
-              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix']  , 2); ?></td>
+              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix'] * $row['qty'], 2); ?> €</td>
               <td> <?php
               echo
               $_SESSION['cart']['total'];
@@ -59,18 +59,17 @@ include "header.php";
             </tr>
 
           <?php
-          endwhile; ?>
+          endforeach; ?>
 
           <tr>
             <td colspan="3">
               <a href="index.php" class="btn btn-success"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Continue
                 Shopping</a>
             </td>
-            <td colspan="2"><b>Grand Total</b></td>
-            <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($grand_total, 2); ?>€</td>
-
+            <td colspan="2"><b>Total panier</b></td>
+            <td><i class="fas"></i>&nbsp;&nbsp;<?=  $_SESSION['cart']['total']; ?>€</td>
             <td>
-              <a href="checkout.php" class="btn btn-info <?= ($grand_total > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
+              <a href="checkout.php" class="btn btn-info <?= ($cartTotal > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
             </td>
 
         </table>

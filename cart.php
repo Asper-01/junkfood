@@ -61,8 +61,50 @@ if (isset($_POST['pid'])) {
 		// On execute la requête SQL
 		$stmt->execute(['qty' => $quantity, 'id_product' => $query['id'], 'user_id' => (int)$_SESSION['id'] ]);
 
-		var_dump($_SESSION['id']);
+		//on check si un panier existe déjà pour cet user et ce produit
+		$stmt = $bdd->prepare('SELECT cart.qty FROM cart WHERE user_id=:user_id and id_product=:id_product'); //on prépare une requete
+		$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"]]); //on attribue a query le resultat requete
+		$cart_line = $stmt->fetch();
+
+
+		// une ligne produit avec ce user existe et la quantité est superieur à 0
+		if($cart_line)
+		{
+			//update la quantité sur cette ligne
+			$new_quantity = $cart_line['qty'] + $quantity;
+			$stmt = $bdd->prepare('UPDATE cart set qty=:new_quantity WHERE user_id=:user_id and id_product=:id_product');
+			$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"], 'new_quantity' => $new_quantity]); 
+		} else {
+			// ce produit n'est pas déjà dans le panier de cet user
+			$stmt = $bdd->prepare('INSERT INTO cart (qty,id_product,user_id) VALUES(:quantity,:id_product,:user_id)');
+			$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"], 'quantity' => $quantity]); 
+		}
+
+	}
+	
+	header('location:/cart.php');
+	return true;
 
 	
-	}
 }
+
+
+
+
+//************************* AFFICHAGE DU PANIER *************************/
+
+//Récupération de l'enssemble des produits en Bdd 
+$sid = (int)$_SESSION['id'];
+$stmt = $bdd->prepare('SELECT cart.*, plats.nom,plats.prix, plats.photo FROM cart
+JOIN `plats` ON `plats`.`id`=`cart`.`id_product`
+WHERE user_id=:id;');
+
+
+$stmt->execute(["id" => $sid]);
+$query = $stmt->fetchAll();
+
+var_dump($_SESSION['id']);
+
+
+
+require_once './view/cartView.php';
