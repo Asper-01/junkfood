@@ -1,7 +1,7 @@
 <?php
 include 'config.php';  // On inclut la Connexion à la Bdd
 include 'fonction.php';  //Include des fonctions pour vérification isAdmin
-include './view/cartView.php';
+
 
 // Initiatilaisation du panier dans la session
 if (isset($_SESSION['cart']) === false) {
@@ -23,18 +23,18 @@ function calculTotalPriceCart()
 	return $total;
 }
 
-function setProductInCart(array $query, int $qty)
-{
-	$productId = $query['id'];
+// function setProductInCart(array $query, int $qty) 
+// {
+// 	$productId = $query['id'];
 
-	$_SESSION['cart']['products'][$productId] = [
-		'idProduct' => $query['id'],
-		'price' => $query['prix'],
-		'quantity' => $qty,
-	];
+// 	$_SESSION['cart']['products'][$productId] = [
+// 		'idProduct' => $query['id'],
+// 		'price' => $query['prix'],
+// 		'quantity' => $qty,
+// 	];
 
-	calculTotalPriceCart();
-}
+// 	calculTotalPriceCart();
+// }
 
 
 // ***********************  Ajouter au panier  **************************
@@ -53,19 +53,13 @@ if (isset($_POST['pid'])) {
 		// Pas de produit correspondant
 		// Implémenter une erreur (éventuellement)
 	} else {
-		// Produit trouvé en BDD
-		// On ajoute le produit dans le panier
-		setProductInCart($query, $quantity);
-		// On prépare la requête SQL
-		$stmt = $bdd->prepare("INSERT INTO cart (qty,id_product,user_id)VALUES(:qty,:id_product,:user_id)");
-		// On execute la requête SQL
-		$stmt->execute(['qty' => $quantity, 'id_product' => $query['id'], 'user_id' => (int)$_SESSION['id'] ]);
+		// setProductInCart($query, $quantity);
+
 
 		//on check si un panier existe déjà pour cet user et ce produit
 		$stmt = $bdd->prepare('SELECT cart.qty FROM cart WHERE user_id=:user_id and id_product=:id_product'); //on prépare une requete
 		$stmt->execute(["id_product" => $pid, "user_id"=> $_SESSION["id"]]); //on attribue a query le resultat requete
 		$cart_line = $stmt->fetch();
-
 
 		// une ligne produit avec ce user existe et la quantité est superieur à 0
 		if($cart_line)
@@ -89,8 +83,6 @@ if (isset($_POST['pid'])) {
 }
 
 
-
-
 //************************* AFFICHAGE DU PANIER *************************/
 
 //Récupération de l'enssemble des produits en Bdd 
@@ -99,12 +91,7 @@ $stmt = $bdd->prepare('SELECT cart.*, plats.nom,plats.prix, plats.photo FROM car
 JOIN `plats` ON `plats`.`id`=`cart`.`id_product`
 WHERE user_id=:id;');
 
-
 $stmt->execute(["id" => $sid]);
 $query = $stmt->fetchAll();
-
-var_dump($_SESSION['id']);
-
-
 
 require_once './view/cartView.php';

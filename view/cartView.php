@@ -18,22 +18,29 @@ require_once "header.php";
               <th>Produit</th>
               <th>Prix unitaire</th>
               <th>Quantitée</th>
-              <th>total unitaire</th>
-              <th>Total</th>
+              <th>sous total</th>
               <th>
                 <a href="action.php?clear=all" class="badge-danger badge p-1" onclick="return confirm('Vider votre panier?');"><i class="fas fa-trash"></i>&nbsp;&nbsp;Clear Cart</a>
               </th>
             </tr>
-         
+
+
+         <?php
+          $totalCart = 0;
+          $sousTotal =0;
+
+          ?>
+
 
           <?php
           //On boucle pour afficher la $query
           foreach ($query as $row):
-          ?>
-          
 
-          while ($row = $stmt->fetch()) :
+            $sousTotal = number_format($row['prix'] * $row['qty']);
+            $totalCart += $sousTotal;
+
           ?>
+
             <tr>
               <td><?= $row['id'] ?></td>
               <input type="hidden" class="pid" value="<?= $row['id'] ?>">
@@ -44,10 +51,9 @@ require_once "header.php";
               </td>
               <input type="hidden" class="pprix" value="<?= $row['prix'] ?>">
               <td>
-                
                 <input type="number" class="form-control itemQty" value="<?= $row['qty'] ?>" style="width:75px;">
               </td>
-              <td><i class="fas"></i>&nbsp;&nbsp;<?= number_format($row['prix'] * $row['qty'], 2); ?> €</td>
+              <td><i class="fas"></i>&nbsp;&nbsp;<?= $sousTotal; ?> €</td>
               <td> <?php
               echo
               $_SESSION['cart']['total'];
@@ -67,9 +73,9 @@ require_once "header.php";
                 Shopping</a>
             </td>
             <td colspan="2"><b>Total panier</b></td>
-            <td><i class="fas"></i>&nbsp;&nbsp;<?=  $_SESSION['cart']['total']; ?>€</td>
+            <td><i class="fas"></i>&nbsp;&nbsp;<?=  $totalCart; ?>€</td>
             <td>
-              <a href="checkout.php" class="btn btn-info <?= ($cartTotal > 1) ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
+              <a href="checkout.php" class="btn btn-info <?= $totalCart > 1 ? '' : 'disabled'; ?>"><i class="far fa-credit-card"></i>&nbsp;&nbsp;Checkout</a>
             </td>
 
         </table>
