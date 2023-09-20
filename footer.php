@@ -11,3 +11,9 @@ de recherche et de pagination)-->
 </body>
 
 </html>
+
+<?php
+if (isset($_SESSION['response'])) {
+    unset($_SESSION['response']);
+    unset($_SESSION['res_type']);
+}

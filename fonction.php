@@ -27,8 +27,3 @@ function AdminConnected()
     }
     return false;
 }
-
-
-
-
-?>

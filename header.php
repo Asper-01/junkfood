@@ -84,3 +84,11 @@ require_once 'fonction.php';
             </div>
         </nav>
     </header>
+
+    <?php if (isset($_SESSION['response'])):?>
+    <div class="message-container">
+        <div class="alert alert-<?= $_SESSION['res_type'] ?>">
+            <?= $_SESSION['response'] ?>
+        </div>
+    </div>
+    <?php endif;?>

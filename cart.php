@@ -2,58 +2,6 @@
 include 'config.php';  // On inclut la Connexion à la Bdd
 include 'fonction.php';  //Include des fonctions pour vérification isAdmin
 
-
-
-
-
-
-// Afficher les messages de mise a jour du CRUD
-if (isset($_SESSION['response'])) {
-
-	echo '<div class="message-container">';
-    echo '<div class="alert alert-' . $_SESSION['res_type'] . '">';
-    echo $_SESSION['response'];
-    echo '</div>';
-    unset($_SESSION['response']);
-    unset($_SESSION['res_type']);
-    echo '</div>';
-}
-
-
-// Initiatilaisation du panier dans la session
-if (isset($_SESSION['cart']) === false) {
-	$_SESSION['cart'] = [
-		'products' => [],
-		'total' => 0,
-	];
-}
-
-// Fonction de calcul du prix total panier
-
-function calculTotalPriceCart()
-{
-	$total = 0;
-	foreach ($_SESSION['cart']['products'] as $product) {
-		$total += intval($product['price']) * $product['quantity'];
-	}
-	$_SESSION['cart']['total'] = $total;
-	return $total;
-}
-
-// function setProductInCart(array $query, int $qty) 
-// {
-// 	$productId = $query['id'];
-
-// 	$_SESSION['cart']['products'][$productId] = [
-// 		'idProduct' => $query['id'],
-// 		'price' => $query['prix'],
-// 		'quantity' => $qty,
-// 	];
-
-// 	calculTotalPriceCart();
-// }
-
-
 // ***********************  Ajouter au panier  **************************
 
 if (isset($_POST['pid'])) {
@@ -91,8 +39,7 @@ if (isset($_POST['pid'])) {
 		}
 	}
 
-	header('location:/cart.php');
-	return true;
+	header('location:/cart.php');exit;
 }
 
 
@@ -105,7 +52,7 @@ if (isset($_GET['delete'])) {
 	$stmt = $bdd->prepare("DELETE FROM cart WHERE id=:id AND user_id=:user_id");
 	$stmt->execute(["id" => $id, "user_id" => $_SESSION['id']]);
 	// On renvoie l'utilisateur à la page Panier + message de confirmation
-	header('location:cart.php');
+	header('location:cart.php');exit;
 }
 
 // ********  CRUD EFFACER TOUS LES CHAMPS D'UN UTILISATEUR  'CART' ********
@@ -118,7 +65,7 @@ if (isset($_GET['clear'])) {
 	$stmt->execute(["user_id" => $_SESSION['id']]);
 	var_dump($_SESSION['id']);
 	// On renvoie l'utilisateur à la page Panier + message de confirmation
-	header('location:cart.php');
+	header('location:cart.php');exit;
 
 }
 //************************* AFFICHAGE DU PANIER *************************/
