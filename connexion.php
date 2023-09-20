@@ -31,6 +31,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) // Si email password 
                 $_SESSION['code_postal'] = $data['code_postal'];
                 $_SESSION['ville'] = $data['ville'];
                 //$_SESSION['user'] = $data['token']; 
+
             
                 header('Location: landing.php');
                 die();

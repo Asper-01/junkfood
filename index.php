@@ -1,6 +1,6 @@
 <?php
-include 'action.php';
-include "header.php";
+require_once 'action.php';
+require_once "header.php";
 ?>
 
 <!-- Affichage des plats -->
@@ -108,5 +108,5 @@ include "header.php";
 
 
 <?php
-include "footer.php";
+require_once "footer.php";
 ?>
