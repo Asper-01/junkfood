@@ -34,7 +34,7 @@ if (isset($_POST['add'])) {
 	// On prépare la requête SQL
 	$stmt = $bdd->prepare("INSERT INTO user(pseudo,nom,prenom,email,adresse,code_postal,ville)VALUES(:pseudo,:nom,:prenom,:email,:adresse,:code_postal,:ville)");
 	// On execute la requête SQL
-	$stmt->execute(['pseudo' => $pseudo,'nom' => $nom,'prenom' => $prenom,'email' => $email,'adresse' => $adresse,'code_postal' => $code_postal,'ville' => $ville]);
+	$stmt->execute(['pseudo' => $pseudo, 'nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'adresse' => $adresse, 'code_postal' => $code_postal, 'ville' => $ville]);
 
 	// On renvoie l'utilisateur à la page CRUD + message de confirmation
 	header('location:monCompte.php');
@@ -42,30 +42,30 @@ if (isset($_POST['add'])) {
 	$_SESSION['res_type'] = "success";
 
 
-		// ******************  CRUD EFFACER ********************
-} 
+	// ******************  CRUD EFFACER ********************
+}
 
 
 
-	// ******************  CRUD EDITION MAJ ********************
+// ******************  CRUD EDITION MAJ ********************
 
+// Vérifier si un post update est réalisé
+// Vérifier si l'user a le droit de modifier les données (pas besoin de récupérer toutes les infos)
+// Si oui
+// Controler les données envoyées par le formulaire
+// Si elles sont bonnes
+// Les envoyer en BDD
+// Afficher une confirmation de MAJ des données
+// Si non gérer un tableau d'erreurs
+// Et afficher la vue du formulaire
+// Si non
+// Gérer une erreur
+
+if (isset($_POST['update'])) {
 	// Vérifier si un post update est réalisé
-		// Vérifier si l'user a le droit de modifier les données (pas besoin de récupérer toutes les infos)
-		// Si oui
-			// Controler les données envoyées par le formulaire
-			// Si elles sont bonnes
-				// Les envoyer en BDD
-				// Afficher une confirmation de MAJ des données
-			// Si non gérer un tableau d'erreurs
-			// Et afficher la vue du formulaire
-		// Si non
-			// Gérer une erreur
-
-if (isset($_POST['update'])) {     
-	// Vérifier si un post update est réalisé
-	$id = $_SESSION['id'];		   
+	$id = $_SESSION['id'];
 	//recupération de l'id de Session utilisateur
-	$stmt = $bdd ->prepare("SELECT id FROM user WHERE id=:id");
+	$stmt = $bdd->prepare("SELECT id FROM user WHERE id=:id");
 	$stmt->execute(["id" => $id]);
 	$row = $stmt->fetch();
 
@@ -76,7 +76,6 @@ if (isset($_POST['update'])) {
 		// Si oui
 		$updateOk = false;
 		//controller si les données sont définies correctement ( à implémenter)
-		$id = $_POST['id'];
 		$pseudo = $_POST['pseudo'];
 		$nom = $_POST['nom'];
 		$prenom = $_POST['prenom'];
@@ -113,6 +112,7 @@ if (isset($_POST['update'])) {
 			// Définition des variables de session
 			$_SESSION['response'] = "Mise a jour effectuée !";
 			$_SESSION['res_type'] = "primary";
+			unset($params['id']);
 			foreach ($params as $key => $row) {
 				$_SESSION[$key] = $row;
 			}
@@ -121,7 +121,6 @@ if (isset($_POST['update'])) {
 			header('location:monCompte.php');
 			exit();
 		}
-
 	}
 
 	var_dump('Debug END');

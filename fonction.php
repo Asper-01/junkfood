@@ -1,7 +1,5 @@
 <?php
 
-
-
 //*******************Fonctions***********************
 
 /**
@@ -18,7 +16,6 @@ function userConnected()
     }
 }
 
-
 /**
  * Permettre de savoir si user est connecté en tant qu'admin (isAdmin a 1) ou membre (0)
  * @return bool
@@ -30,8 +27,3 @@ function AdminConnected()
     }
     return false;
 }
-
-
-
-
-?>
