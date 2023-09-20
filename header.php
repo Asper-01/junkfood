@@ -37,9 +37,11 @@ require_once 'fonction.php';
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
+                <?php if (ClientConnected()) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="./contact.php">Nous contacter<span class="sr-only">(current)</span></a>
                     </li>
+                    <?php } ?>
                     <?php if (userConnected()) { ?>
                     <?php } ?>
                     <?php //var_dump($_SESSION);
@@ -55,9 +57,10 @@ require_once 'fonction.php';
                         <li class="nav-item active">
                             <a class="nav-link" href="./crud-users.php">Gestion Users<span class="sr-only">(current)</span></a>
                         </li>
+                            <a class="nav-link" href="./admin/product.php">Administration</a>
+                        </li>
                     <?php } ?>
-                    <?php if (userConnected()) {
-                        //Fonction PhP pour afficher l'icône' "Mon panier" si l'utilisateur est connecté: $_SESSION['connexion'] = true; si le mdp et le log sont corrects dans connection.php 
+                    <?php if (userConnected()) {     
                     ?>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php">Mon panier <i class="fas fa-shopping-cart"></i> <span id="cart-item" span class="badge badge-danger"></span></a>

@@ -1,6 +1,6 @@
 <?php
-include 'action.user.php';
-include "header.php";
+require_once 'action.user.php';
+require_once "header.php";
 ?>
 
 <body>
@@ -42,4 +42,4 @@ include "header.php";
     </body>
 
     <?php
-    include "footer.php";
+    require_once "footer.php";

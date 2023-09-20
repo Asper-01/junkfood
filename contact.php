@@ -1,6 +1,6 @@
 <?php
-include 'action.php';
-include "header.php";
+require_once 'action.php';
+require_once "header.php";
 ?>
 
 <body>

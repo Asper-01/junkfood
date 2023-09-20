@@ -1,8 +1,14 @@
 <?php
-include '../config.php';  // On inclut la Connexion à la Bdd
-include '../fonction.php';  //Include des fonctions pour vérification isAdmin
+require_once '../config.php';  // On inclut la Connexion à la Bdd
+require_once '../fonction.php';  //Include des fonctions pour vérification isAdmin
 
-
+$update = false;
+$id = "";
+$nom = "";
+$preparation = "";
+$prix = "";
+$photo = "";
+$categorie = "";
 
 
 // *******************************  CRUD  ********************************
@@ -27,11 +33,13 @@ if (isset($_POST['add'])) {
 	// La partie upload du fichier image via un dossier temporaire
 	move_uploaded_file($_FILES['image']['tmp_name'], $upload);
 	// On renvoie l'utilisateur à la page CRUD + message de confirmation
-	header('location:recettes.php');
+	header('location:product.php');
 	$_SESSION['response'] = "Insertion réussie en base de donnée !";
 	$_SESSION['res_type'] = "success";
 
+
 	// ******************  CRUD EFFACER ********************
+
 } else if (isset($_GET['delete'])) {
 	$id = $_GET['delete'];
 	// On séléctionne ce qui va être effacé
@@ -44,13 +52,13 @@ if (isset($_POST['add'])) {
 	$stmt = $bdd->prepare("DELETE FROM plats WHERE id=:id");
 	$stmt->execute(["id" => $id]);
 	// On renvoie l'utilisateur à la page CRUD + message de confirmation
-	header('location:recettes.php');
+	header('location:product.php');
 	$_SESSION['response'] = "Champ effacé de la base de donnée !";
 	$_SESSION['res_type'] = "danger";
 }
 
-// ******************  CRUD EDITION MAJ ********************
 
+// ******************  CRUD EDITION MAJ ********************
 
 if (isset($_GET['edit'])) {    // Editer une entrée de la Bdd
 	$id = $_GET['edit'];
@@ -87,9 +95,28 @@ if (isset($_POST['update'])) {
 	$stmt->execute(["nom" => $nom, "categorie" => $categorie, "preparation" => $preparation, "photo" => $newimage, "id" => $id, "prix" =>$prix,]);
 	$_SESSION['response'] = "Mise a jour effectuée !";
 	$_SESSION['res_type'] = "primary";
-	header('location:recettes.php');
+	header('location:product.php');
 }
 
 
-include 'view/recettes.php'; // On inclut le fichier recette
 
+
+// ******************  CRUD DETAILS AFFICHAGE ********************
+if (isset($_GET['details'])) {
+	$id = $_GET['details'];
+	$stmt = $bdd->prepare("SELECT * FROM plats WHERE id=:id");
+	$stmt->execute(["id" => $id]);
+	$row = $stmt->fetch();
+
+	$vid = $row['id'];
+	$vnom = $row['nom'];
+	$vpreparation = $row['preparation'];
+	$vprix = $row['prix'];
+	$vphoto = $row['photo'];
+	$vcategorie = $row['categorie'];
+	
+}
+
+
+
+include 'view/productView.php'; // On inclut le fichier productView pour l'affichage
