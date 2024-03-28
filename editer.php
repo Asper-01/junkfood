@@ -1,6 +1,6 @@
 <?php
-include 'action.php';
-include "header.php";
+require_once 'action.php';
+require_once "header.php";
 
 if (!AdminConnected()) {
     header('location:index.php');
@@ -9,7 +9,7 @@ if (!AdminConnected()) {
 
 
 <body>
-    <body class="d-flex flex-column">
+   
         <div class="container-fluid">
             <div class="edition">
                 <form action="action.php" method="post" enctype="multipart/form-data">
@@ -49,7 +49,7 @@ if (!AdminConnected()) {
                         </div>
                 </form>
             </div>
-    </body>
+    
 
     <?php
     include "footer.php";

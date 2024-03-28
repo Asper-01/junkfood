@@ -16,7 +16,7 @@ require_once "header.php";
             <div class="col-sm-6 col-md-4 col-lg-3 mb-2 p-4">
                 <div class="card-deck">
                     <div class="form3 p-2 border-secondary mb-2">
-                        <img src="<?= $row['photo'] ?>" class="img-thumbnail" height="250">
+                        <img src="<?= $row['photo'] ?>" class="img-thumbnail " height="250">
                         <div class="card-body p-1">
                             <h4 class="card-title text-center text-info"><?= $row['nom'] ?></h4>
                             <h5 class="card-text text-center text-danger"></i>&nbsp;&nbsp;<?= number_format($row['prix'], 2) ?> €</h5>

@@ -1,5 +1,5 @@
 <?php
-include 'config.php';    // On inclut la Connexion à la Bdd
+require_once 'config.php';    // On inclut la Connexion à la Bdd
 
 
 $update = false;

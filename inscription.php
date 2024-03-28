@@ -118,11 +118,14 @@ require_once 'header.php';
                             <input type="password" name="password_retype" class="form-control" placeholder="Re-tapez mot de passe" required="required" autocomplete="off"><br>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-info btn-block">Inscription</button>
-
-                    <a href="index.php" class="btn btn-danger btn-block">Retour à l'accueil</a>
-
+                    <div class="raw2">
+                        <div class="col2 d-flex">
+                            <button type="submit" class="btn btn-info">Inscription</button>
+                        </div>
+                        <div class="col2 d-flex">
+                            <a href="index.php" class="btn btn-danger">Retour</a>
+                        </div>
+                    </div>
                 </form>
             </div>
 

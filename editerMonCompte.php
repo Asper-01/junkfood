@@ -1,11 +1,11 @@
 <?php
-include 'action.user.php';
-include "header.php";
+require_once 'action.user.php';
+require_once "header.php";
 ?>
 
 <body>
 
-    <body class="d-flex flex-column">
+
         <div class="container-fluid">
             <div class="edition">
                 <form action="action.user.php" method="post" enctype="multipart/form-data">
@@ -39,7 +39,7 @@ include "header.php";
                         </div>
                 </form>
             </div>
-    </body>
+    
 
     <?php
-    include "footer.php";
+    require_once "footer.php";
