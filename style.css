@@ -44,7 +44,7 @@ body {
    background-size: cover;
    background-size: cover;
    background-position: center;
-   height: 100vh;
+   height: 200vh;
 }
 
 .container-fluid {
@@ -94,6 +94,13 @@ body {
    font-weight: bold;
 }
 
+.col,
+.btn {
+min-width: 20vh;
+
+}
+
+
 
 
 
@@ -104,7 +111,12 @@ body {
    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.216);
    padding: 30px;
    border-radius: 8px;
-   max-height: 80vh;
+   max-height: 1000vh;
+}
+
+/*MISE EN PAGE read.php */
+.thumb {
+   border-radius: 8px;
 }
 
 /* MISE EN PAGE INDEX page "index.php" */
@@ -145,7 +157,7 @@ body {
    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.216);
    padding: 30px;
    border-radius: 8px;
-   max-height: 65vh;
+   max-height: 80vh;
 }
 
 .edition {
@@ -194,8 +206,10 @@ input.form {
    background-color: rgba(255, 255, 255, 0.681);
    padding: 10px;
    border-radius: 10px;
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Ombre légère */
-   max-width: 300px; /* Ajustez la largeur en fonction de vos besoins */
+   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+   /* Ombre légère */
+   max-width: 300px;
+   /* Ajustez la largeur en fonction de vos besoins */
 }
 
 
@@ -205,3 +219,59 @@ input.form {
    max-width: 200px;
    position: fixed;
 }
+
+/* Styles CSS pour les petits écrans */
+@media (max-width: 768px) {
+    /* Réduire la taille de la police dans les cellules du tableau */
+    table.table th,
+    table.table td {
+        font-size: 14px;
+    }
+
+    /* Centrer le contenu des cellules */
+    table.table th,
+    table.table td {
+        text-align: center;
+    }
+
+    /* Masquer les noms de colonnes par défaut */
+    table.table th {
+        display: none;
+    }
+
+    /* Afficher les noms de colonnes dans un style différent */
+    table.table th:nth-child(1):before {
+        content: "Photo";
+    }
+
+    table.table th:nth-child(2):before {
+        content: "Produit";
+    }
+
+    table.table th:nth-child(3):before {
+        content: "Prix unitaire";
+    }
+
+    table.table th:nth-child(4):before {
+        content: "Quantité";
+    }
+
+    table.table th:nth-child(5):before {
+        content: "Sous-total";
+    }
+
+    table.table th:nth-child(6):before {
+        content: "Actions";
+    }
+
+    /* Ajuster la largeur des cellules pour qu'elles s'adaptent au contenu */
+    table.table th,
+    table.table td {
+        width: 50px;
+    }
+   }
+   .btn-custom {
+      font-size: 10px; /* Taille du texte */
+      padding: 5px 10px; /* Espacement autour du bouton */
+      max-width: 10px; /* Largeur maximale souhaitée */
+    }

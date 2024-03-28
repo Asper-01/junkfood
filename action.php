@@ -1,6 +1,6 @@
 <?php
-include 'config.php';  // On inclut la Connexion à la Bdd
-include 'fonction.php';  //Include des fonctions pour vérification isAdmin
+require_once 'config.php';  // On inclut la Connexion à la Bdd
+require_once 'fonction.php';  //Include des fonctions pour vérification isAdmin
 
 $update = false;
 $id = "";

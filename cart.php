@@ -1,6 +1,6 @@
 <?php
-include 'config.php';  // On inclut la Connexion à la Bdd
-include 'fonction.php';  //Include des fonctions pour vérification isAdmin
+require_once 'config.php';  // On inclut la Connexion à la Bdd
+require_once 'fonction.php';  //Include des fonctions pour vérification isAdmin
 
 // ***********************  Ajouter au panier  **************************
 
@@ -68,6 +68,16 @@ if (isset($_GET['clear'])) {
 	header('location:cart.php');exit;
 
 }
+
+// Ajouter le code JavaScript pour masquer les messages d'alerte après 3 secondes
+echo '<script>
+    setTimeout(function() {
+        var alertDiv = document.querySelector(".alert");
+        if (alertDiv) {
+            alertDiv.style.display = "none";
+        }
+    }, 3000);
+</script>';
 //************************* AFFICHAGE DU PANIER *************************/
 
 //Récupération de l'enssemble des produits en Bdd 
